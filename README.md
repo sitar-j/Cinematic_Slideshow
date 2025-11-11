@@ -55,11 +55,11 @@ The English version of the application will be available soon.
 
 📄 ライセンス
 
-GPL v3 License - 詳細はLICENSEファイルを参照
+    GPL v3 License - 詳細はLICENSEファイルを参照
 
 👨‍💻 作者
 
-sitarj
+    sitarj
 
 -----------------------------------------
 
@@ -116,8 +116,8 @@ Extended support (requires pillow-avif-plugin)
 
 📄 License
 
-GPL v3 License - See the LICENSE file for details.
+    GPL v3 License - See the LICENSE file for details.
 
 👨‍💻 Author
 
-sitarj
+    sitarj
