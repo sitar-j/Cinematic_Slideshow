@@ -73,52 +73,52 @@ sitarj
 
 Basic Usage
 
-Launch the Application
-Add a folder containing images using "Image Folder"
-Start the slideshow with the "OK" button
+    Launch the Application
+    Add a folder containing images using "Image Folder"
+    Start the slideshow with the "OK" button
 
 Profile Function
 
-Save multiple settings as "profiles"
-Switch between settings depending on your needs
+    Save multiple settings as "profiles"
+    Switch between settings depending on your needs
 
 Create Shortcuts
 
-Create a Windows shortcut that launches with a specific profile
-Use the --setting argument to access the settings screen
+    Create a Windows shortcut that launches with a specific profile
+    Use the --setting argument to access the settings screen
 
 ⚙️ Settings
 
-Display Time: Display time for each image (1-60 seconds)
-Ken Burns Effect: Cinematic pan-and-zoom effect
-Transition Effect: Image transition effect
-Display Method: Pan-and-Scan / Letterbox
-File Name Display: Set the image file name display
+    Display Time: Display time for each image (1-60 seconds)
+    Ken Burns Effect: Cinematic pan-and-zoom effect
+    Transition Effect: Image transition effect
+    Display Method: Pan-and-Scan / Letterbox
+    File Name Display: Set the image file name display
 
 🎮 Controls
 Keyboard
 
-Space: Pause/Resume
-Esc: Exit
+    Space: Pause/Resume
+    Esc: Exit
 
 Mouse
 
-Right-click: Display context menu
+    Right-click: Display context menu
 
 📁 Supported Formats
 Native Support
 
-JPEG, PNG, BMP, GIF, WebP, TIFF, ICO, SVG
+    JPEG, PNG, BMP, GIF, WebP, TIFF, ICO, SVG
 
 Extended support (requires pillow-avif-plugin)
 
-AVIF, HEIC, HEIF, JPEG2000
+    AVIF, HEIC, HEIF, JPEG2000
 
 🐛 Known Issues
 
-Black bars may temporarily appear when using the Ken Burns effect.
-
-It works reliably even with large numbers of images, but the initial load may take a long time.
+    Black bars may temporarily appear when using the Ken Burns effect.
+    
+    It works reliably even with large numbers of images, but the initial load may take a long time.
 
 🤝 Contributions
 
