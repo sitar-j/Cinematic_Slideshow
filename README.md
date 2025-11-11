@@ -53,10 +53,6 @@ The English version of the application will be available soon.
     Ken Burns効果中に一時的に黒帯が表示される場合があります
     大量の画像でも安定動作しますが、初回読み込み時に時間がかかる場合があります
 
-🤝 コントリビューション
-
-バグ報告、機能提案、プルリクエストを歓迎します！
-
 📄 ライセンス
 
 GPL v3 License - 詳細はLICENSEファイルを参照
@@ -64,8 +60,6 @@ GPL v3 License - 詳細はLICENSEファイルを参照
 👨‍💻 作者
 
 sitarj
-
-⭐ このプロジェクトが役に立ったら、スターをお願いします！
 
 -----------------------------------------
 
@@ -120,10 +114,6 @@ Extended support (requires pillow-avif-plugin)
     
     It works reliably even with large numbers of images, but the initial load may take a long time.
 
-🤝 Contributions
-
-Bug reports, feature suggestions, and pull requests are welcome!
-
 📄 License
 
 GPL v3 License - See the LICENSE file for details.
@@ -131,6 +121,3 @@ GPL v3 License - See the LICENSE file for details.
 👨‍💻 Author
 
 sitarj
-
-⭐ If you found this project useful, please give it a star!
-
