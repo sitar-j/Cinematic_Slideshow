@@ -2,6 +2,7 @@
 A slideshow application with cinematic effects
 
 📖 使い方
+
 基本的な使い方
 
     アプリケーションを起動
