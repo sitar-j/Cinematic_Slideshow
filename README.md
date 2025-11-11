@@ -17,6 +17,7 @@ A slideshow application with cinematic effects
 ショートカット作成
 
     特定のプロファイルで起動するWindowsショートカットを作成可能
+    引数を--settingにすれば、設定画面を呼び出し
 
 ⚙️ 設定項目
 
