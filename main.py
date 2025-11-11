@@ -2346,8 +2346,8 @@ def show_about_dialog(parent_widget):
     
     version_info = QtWidgets.QLabel("""
     <p style='margin: 5px 0; color: #7f8c8d; font-size: 12px;'>
-    <b>バージョン:</b> 1.0.0<br>
-    <b>リリース:</b> 2025年10月<br>
+    <b>バージョン:</b> 1.0<br>
+    <b>リリース:</b> 2025年11月<br>
     <b>ビルド:</b> Python + PyQt5
     </p>
     """)
@@ -2380,7 +2380,7 @@ def show_about_dialog(parent_widget):
 <li><b>Pillow:</b> HPND License</li>
 </ul>
 <p style="margin-top: 10px; font-size: 11px;">
-<b>ソースコード:</b> https://github.com/[あなたのユーザー名]/cinematic-slideshow<br>
+<b>ソースコード:</b> https://github.com/sitar-j/Cinematic_Slideshow<br>
 <b>ライセンス全文:</b> https://www.gnu.org/licenses/gpl-3.0.html
 </p>
     """)
@@ -2405,7 +2405,7 @@ def show_about_dialog(parent_widget):
 個人・商用利用可能（GPL v3準拠）<br>
 改変・再配布も自由です
 </p>
-<p style="font-size: 11px; color: #7f8c8d; margin-top: 8px;">© 2024 All rights reserved.</p>
+<p style="font-size: 11px; color: #7f8c8d; margin-top: 8px;">© 2025 All rights reserved.</p>
     """)
     
     # 免責事項
