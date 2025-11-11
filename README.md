@@ -1,6 +1,8 @@
 # Cinematic_Slideshow
 A slideshow application with cinematic effects
 
+The English version of the application will be available soon.
+
 📖 使い方
 
 基本的な使い方
@@ -64,3 +66,71 @@ GPL v3 License - 詳細はLICENSEファイルを参照
 sitarj
 
 ⭐ このプロジェクトが役に立ったら、スターをお願いします！
+
+-----------------------------------------
+
+📖 How to Use
+
+Basic Usage
+
+Launch the Application
+Add a folder containing images using "Image Folder"
+Start the slideshow with the "OK" button
+
+Profile Function
+
+Save multiple settings as "profiles"
+Switch between settings depending on your needs
+
+Create Shortcuts
+
+Create a Windows shortcut that launches with a specific profile
+Use the --setting argument to access the settings screen
+
+⚙️ Settings
+
+Display Time: Display time for each image (1-60 seconds)
+Ken Burns Effect: Cinematic pan-and-zoom effect
+Transition Effect: Image transition effect
+Display Method: Pan-and-Scan / Letterbox
+File Name Display: Set the image file name display
+
+🎮 Controls
+Keyboard
+
+Space: Pause/Resume
+Esc: Exit
+
+Mouse
+
+Right-click: Display context menu
+
+📁 Supported Formats
+Native Support
+
+JPEG, PNG, BMP, GIF, WebP, TIFF, ICO, SVG
+
+Extended support (requires pillow-avif-plugin)
+
+AVIF, HEIC, HEIF, JPEG2000
+
+🐛 Known Issues
+
+Black bars may temporarily appear when using the Ken Burns effect.
+
+It works reliably even with large numbers of images, but the initial load may take a long time.
+
+🤝 Contributions
+
+Bug reports, feature suggestions, and pull requests are welcome!
+
+📄 License
+
+GPL v3 License - See the LICENSE file for details.
+
+👨‍💻 Author
+
+sitarj
+
+⭐ If you found this project useful, please give it a star!
+
