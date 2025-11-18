@@ -1231,6 +1231,13 @@ class SlideShowWindow(QtWidgets.QWidget):
             self._apply_ken_burns_during_transition(t, effect_t_eased)
             
             # エフェクト固有の視覚効果
+            if self.next_effect == "none":
+                if self.current_item:
+                    self.current_item.setOpacity(0.0)
+                if self.next_item:
+                    self.next_item.setOpacity(1.0)
+            elif self.next_effect == "crossfade":
+                self._apply_crossfade_opacity(effect_t_eased)
             if self.next_effect == "crossfade":
                 self._apply_crossfade_opacity(effect_t_eased)
             elif self.next_effect == "zoom":
@@ -2346,9 +2353,9 @@ def show_about_dialog(parent_widget):
     
     version_info = QtWidgets.QLabel("""
     <p style='margin: 5px 0; color: #7f8c8d; font-size: 12px;'>
-    <b>バージョン:</b> 1.0<br>
-    <b>リリース:</b> 2025年11月<br>
-    <b>ビルド:</b> Python + PyQt5
+    <b>Version :</b> 1.1<br>
+    <b>Release :</b> Nov, 2025<br>
+    <b>Build :</b> Python + PyQt5
     </p>
     """)
     
@@ -2372,16 +2379,16 @@ def show_about_dialog(parent_widget):
         line-height: 1.3;
     """)
     license_info.setText("""
-<p><b>📄 オープンソースライセンス:</b></p>
+<p><b>📄 Open source license:</b></p>
 <ul style="margin: 8px 0 0 18px; padding: 0;">
-<li><b>本ソフトウェア:</b> GPL v3 License</li>
+<li><b>Software :</b> GPL v3 License</li>
 <li><b>PyQt5:</b> GPL v3 - Riverbank Computing</li>
 <li><b>Python:</b> PSF License</li>
 <li><b>Pillow:</b> HPND License</li>
 </ul>
 <p style="margin-top: 10px; font-size: 11px;">
-<b>ソースコード:</b> https://github.com/sitar-j/Cinematic_Slideshow<br>
-<b>ライセンス全文:</b> https://www.gnu.org/licenses/gpl-3.0.html
+<b>Source code: </b> https://github.com/sitar-j/Cinematic_Slideshow<br>
+<b>Full license :</b> https://www.gnu.org/licenses/gpl-3.0.html
 </p>
     """)
     
