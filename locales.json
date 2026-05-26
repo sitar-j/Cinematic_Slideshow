@@ -1,0 +1,821 @@
+{
+  "msg_intro": {
+    "ja": "映画的なスライドショーを開始するには",
+    "en": "To start a cinematic slideshow"
+  },
+  "msg_add_folder": {
+    "ja": "画像が保存されているフォルダを追加してください",
+    "en": "please add a folder containing your images"
+  },
+  "msg_how_to_open_settings": {
+    "ja": "右クリック → 設定 から設定できます",
+    "en": "You can access settings via right-click → Settings"
+  },
+  "menu_next_image": {
+    "ja": "次の画像",
+    "en": "Next Image"
+  },
+  "menu_prev_image": {
+    "ja": "前の画像",
+    "en": "Previous Image"
+  },
+  "menu_toggle_pause": {
+    "ja": "一時停止/再開 (Space)",
+    "en": "Pause/Resume (Space)"
+  },
+  "menu_settings": {
+    "ja": "設定",
+    "en": "Settings"
+  },
+  "menu_open_in_explorer": {
+    "ja": "エクスプローラーで開く",
+    "en": "Open in Explorer"
+  },
+  "menu_delete_image": {
+    "ja": "この画像を削除",
+    "en": "Delete This Image"
+  },
+    "menu_about": {
+  "ja": "バージョン情報",
+  "en": "About"
+  },
+  "menu_exit": {
+    "ja": "終了 (Esc)",
+    "en": "Exit (Esc)"
+  },
+  "title_warning": {
+    "ja": "警告",
+    "en": "Warning"
+  },
+  "title_error": {
+    "ja": "エラー",
+    "en": "Error"
+  },
+  "title_confirm": {
+    "ja": "確認",
+    "en": "Confirm"
+  },
+  "msg_file_not_found": {
+    "ja": "ファイルが見つかりません\n既に削除または移動された可能性があります",
+    "en": "File not found\nIt may have been deleted or moved"
+  },
+  "msg_explorer_open_failed": {
+    "ja": "エクスプローラーを開けませんでした",
+    "en": "Failed to open Explorer"
+  },
+   "title_delete_error": {
+    "ja": "削除エラー",
+    "en": "Delete Error"
+  },
+  "label_file_name": {
+    "ja": "ファイル名",
+    "en": "File Name"
+  },
+  "msg_confirm_delete_file": {
+    "ja": "以下のファイルを完全に削除しますか？\n\nファイル名: {name}\nフルパス: {path}\n\nこの操作は元に戻せません",
+    "en": "Are you sure you want to permanently delete this file?\n\nFile name: {name}\nFull path: {path}\n\nThis action cannot be undone"
+  },
+  "msg_delete_failed": {
+    "ja": "ファイルの削除に失敗しました",
+    "en": "Failed to delete file"
+  },
+  "msg_no_images_found": {
+    "ja": "画像が見つかりませんでした",
+    "en": "No images found"
+  },
+  "msg_loading_complete": {
+    "ja": "読み込み完了",
+    "en": "Loading complete"
+  },
+  "msg_no_images": {
+    "ja": "画像がありません",
+    "en": "No images available"
+  },
+  "msg_index_error": {
+    "ja": "画像インデックスエラー",
+    "en": "Image index error"
+  },
+  "msg_no_display_images": {
+    "ja": "表示可能な画像がありません",
+    "en": "No displayable images"
+  },
+  "msg_invalid_pixmap_warning": {
+    "ja": "警告: 無効なpixmapが渡されました",
+    "en": "Warning: invalid pixmap received"
+  },
+  "title_about": {
+    "ja": "Cinematic Slideshowについて",
+    "en": "About Cinematic Slideshow"
+  },
+"label_developer": {
+  "ja": "開発者:",
+  "en": "Developer:"
+},
+"label_open_source": {
+  "ja": "オープンソース・フリーウェア",
+  "en": "Open-source freeware"
+},
+"msg_about_footer": {
+  "ja": "個人・商用利用可能（GPL v3準拠）\n改変・再配布も自由です\n© 2026 All rights reserved",
+  "en": "Free for personal and commercial use (GPL v3)\nModification and redistribution allowed\n© 2026 All rights reserved"
+},
+  "msg_disclaimer": {
+    "ja": "⚠️ 免責事項:\n本ソフトウェアは「現状のまま」提供され、動作保証はありません\n使用によって生じたいかなる損害も作者は責任を負いません\n画像ファイルの取り扱いには十分ご注意ください\nご利用は自己責任でお願いします",
+    "en": "⚠️ Disclaimer:\nThis software is provided as-is without warranty\nThe author is not liable for any damages\nPlease handle image files with care\nUse at your own risk"
+  },
+  "title_profile_settings": {
+    "ja": "Cinematic Slideshow - プロファイル設定",
+    "en": "Cinematic Slideshow - Profile Settings"
+  },
+  "btn_profile_new": {
+    "ja": "新規作成",
+    "en": "New"
+  },
+  "btn_profile_save": {
+    "ja": "保存",
+    "en": "Save"
+  },
+  "btn_profile_rename": {
+    "ja": "名前変更",
+    "en": "Rename"
+  },
+  "btn_profile_duplicate": {
+    "ja": "複製",
+    "en": "Duplicate"
+  },
+  "btn_profile_delete": {
+    "ja": "削除",
+    "en": "Delete"
+  },
+    "btn_add": {
+    "ja": "追加",
+    "en": "Add"
+  },
+  "chk_include_subfolders": {
+    "ja": "サブフォルダを含める",
+    "en": "Include subfolders"
+  },
+  "mode_fullscreen": {
+    "ja": "全画面",
+    "en": "Fullscreen"
+  },  "mode_window": {
+    "ja": "ウィンドウ",
+    "en": "Window"
+  },
+  "chk_window_resizable": {
+    "ja": "ウィンドウサイズの変更を許可",
+    "en": "Allow window resizing"
+  },
+  "order_name": {
+    "ja": "名前順",
+    "en": "By name"
+  },
+  "order_random": {
+    "ja": "ランダム再生",
+    "en": "Random"
+  },
+  "layer_front": {
+    "ja": "最前面",
+    "en": "Always on top"
+  },
+  "layer_back": {
+    "ja": "最背面",
+    "en": "Send to back"
+  },
+  "fit_cover": {
+    "ja": "パン＆スキャン",
+    "en": "Crop to fill"
+  },
+  "fit_contain": {
+    "ja": "レターボックス",
+    "en": "Fit inside"
+  },
+  "chk_show_filename": {
+    "ja": "表示",
+    "en": "Show"
+  },
+  "pos_vertical_top": {
+    "ja": "上",
+    "en": "Top"
+  },
+  "pos_vertical_bottom": {
+    "ja": "下",
+    "en": "Bottom"
+  },
+  "pos_horizontal_left": {
+    "ja": "左",
+    "en": "Left"
+  },
+  "pos_horizontal_center": {
+    "ja": "中央",
+    "en": "Center"
+  },
+  "pos_horizontal_right": {
+    "ja": "右",
+    "en": "Right"
+  },
+   "btn_font": {
+    "ja": "フォント...",
+    "en": "Font..."
+  },
+  "effect_crossfade": {
+    "ja": "クロスフェード",
+    "en": "Crossfade"
+  },
+  "effect_slide": {
+    "ja": "スライド",
+    "en": "Slide"
+  },
+  "effect_zoom": {
+    "ja": "ズーム",
+    "en": "Zoom"
+  },
+  "effect_wipe": {
+    "ja": "ワイプ",
+    "en": "Wipe"
+  },
+  "effect_fade_to_black": {
+    "ja": "フェード・トゥ・ブラック",
+    "en": "Fade to Black"
+  },
+  "effect_order_sequential": {
+    "ja": "順番",
+    "en": "Sequential"
+  },
+  "effect_order_random": {
+    "ja": "ランダム",
+    "en": "Random"
+  },
+  "effect_ken_burns": {
+    "ja": "Ken Burns効果",
+    "en": "Ken Burns Effect"
+  },
+  "label_shortcut_create": {
+    "ja": "現在のプロファイルで起動するショートカット",
+    "en": "Shortcut to launch with current profile"
+  },
+  "btn_create_shortcut": {
+    "ja": "作成",
+    "en": "Create"
+  },
+  "label_backup_restore": {
+    "ja": "プロファイルのバックアップ・リストア",
+    "en": "Profile backup and restore"
+  },
+  "btn_backup": {
+    "ja": "バックアップ",
+    "en": "Backup"
+  },
+  "btn_restore": {
+    "ja": "リストア",
+    "en": "Restore"
+  },
+  "btn_about": {
+    "ja": "ソフトウェア情報 ℹ️",
+    "en": "About ℹ️"
+  },
+  "label_language": {
+    "ja": "Language:",
+    "en": "Language:"
+  },
+  "title_info": {
+    "ja": "情報",
+    "en": "Information"
+  },
+  "msg_language_changed_restart": {
+    "ja": "言語設定を変更しました\n適用後に再起動すると反映されます",
+    "en": "Language setting changed.\nRestart after applying changes to take effect."
+  },
+  "btn_cancel": {
+    "ja": "キャンセル",
+    "en": "Cancel"
+  },
+  "btn_apply": {
+    "ja": "適用",
+    "en": "Apply"
+  },
+  "group_profile": {
+    "ja": "プロファイル",
+    "en": "Profile"
+  },
+  "label_profile": {
+    "ja": "プロファイル:",
+    "en": "Profile:"
+  },
+   "group_folder": {
+    "ja": "画像フォルダ",
+    "en": "Image Folder"
+  },
+  "group_display": {
+    "ja": "表示設定",
+    "en": "Display Settings"
+  },
+  "group_mode": {
+    "ja": "モード",
+    "en": "Mode"
+  },
+  "label_monitor": {
+    "ja": "実行モニター",
+    "en": "Monitor"
+  },
+  "label_window_size": {
+    "ja": "初期ウィンドウサイズ",
+    "en": "Initial Window Size"
+  },
+  "label_width": {
+    "ja": "幅",
+    "en": "Width"
+  },
+  "label_height": {
+    "ja": "高さ",
+    "en": "Height"
+  },
+  "group_order": {
+    "ja": "再生順",
+    "en": "Playback Order"
+  },
+  "group_depth": {
+    "ja": "深度",
+    "en": "Layer"
+  },
+  "group_fit": {
+    "ja": "表示方法",
+    "en": "Fit Mode"
+  },
+  "label_display_time": {
+    "ja": "表示時間",
+    "en": "Display Time"
+  },
+  "unit_seconds": {
+    "ja": "秒",
+    "en": "sec"
+  },
+  "group_filename": {
+    "ja": "ファイル名",
+    "en": "Filename"
+  },
+  "label_vertical": {
+    "ja": "垂直",
+    "en": "Vertical"
+  },
+  "label_horizontal": {
+    "ja": "水平",
+    "en": "Horizontal"
+  },
+  "label_adjustment": {
+    "ja": "微調整",
+    "en": "Offset"
+  },
+  "group_effect": {
+    "ja": "エフェクト設定",
+    "en": "Effects"
+  },
+  "group_transition": {
+    "ja": "切替時のエフェクト種別",
+    "en": "Transition Effects"
+  },
+  "label_effect_order": {
+    "ja": "適用順",
+    "en": "Order"
+  },
+  "label_effect_time": {
+    "ja": "切替時のエフェクト時間 (秒)",
+    "en": "Transition Duration (sec)"
+  },
+  "group_image_effect": {
+    "ja": "表示エフェクト",
+    "en": "Image Effects"
+  },
+  "label_strength": {
+    "ja": "強度",
+    "en": "Strength"
+  },
+   "tooltip_profile_select": {
+    "ja": "使用するプロファイルを選択します",
+    "en": "Select a profile to use"
+  },
+  "tooltip_profile_new": {
+    "ja": "新しいプロファイルを作成します",
+    "en": "Create a new profile"
+  },
+  "tooltip_profile_save": {
+    "ja": "現在の設定をプロファイルに保存します",
+    "en": "Save current settings to profile"
+  },
+  "tooltip_profile_rename": {
+    "ja": "選択中のプロファイル名を変更します",
+    "en": "Rename selected profile"
+  },
+  "tooltip_profile_duplicate": {
+    "ja": "選択中のプロファイルを複製します",
+    "en": "Duplicate selected profile"
+  },
+    "tooltip_profile_remove": {
+    "ja": "選択中のプロファイルを削除します\n（Defaultプロファイルは削除できません）",
+    "en": "Delete selected profile\n(Default profile cannot be deleted)"
+  },
+  "tooltip_create_shortcut": {
+    "ja": "現在のプロファイル設定でスライドショーを起動する\nWindowsショートカットを作成します",
+    "en": "Create a Windows shortcut\nthat launches slideshow with current profile"
+  },
+  "tooltip_backup": {
+    "ja": "現在の全プロファイル設定を任意の場所へバックアップします",
+    "en": "Backup all profiles to a selected location"
+  },
+  "tooltip_restore": {
+    "ja": "バックアップファイルから全プロファイル設定を復元します\n（現在の全設定は上書きされます）",
+    "en": "Restore profiles from backup\n(Current settings will be overwritten)"
+  },
+  "tooltip_folder_list": {
+    "ja": "画像が保存されているフォルダの一覧です\nドラッグ&ドロップでも追加できます",
+    "en": "List of image folders\nSupports drag and drop"
+  },
+  "tooltip_folder_add": {
+    "ja": "画像フォルダを追加します",
+    "en": "Add image folder"
+  },
+  "tooltip_folder_remove": {
+    "ja": "選択されたフォルダを一覧から削除します",
+    "en": "Remove selected folder from list"
+  },
+  "tooltip_recursive": {
+    "ja": "選択されたフォルダのサブフォルダも検索対象に含めます",
+    "en": "Include subfolders in search"
+  },
+  "tooltip_mode_fullscreen": {
+    "ja": "指定したモニターで全画面表示します",
+    "en": "Display in fullscreen on selected monitor"
+  },
+  "tooltip_mode_window": {
+    "ja": "ウィンドウモードで表示します",
+    "en": "Display in windowed mode"
+  },
+  "tooltip_window_width": {
+  "ja": "ウィンドウの初期幅を設定します",
+  "en": "Set initial window width"
+  },
+  "tooltip_window_height": {
+    "ja": "ウィンドウの初期高さを設定します",
+    "en": "Set initial window height"
+  },
+  "tooltip_window_resizable": {
+    "ja": "ウィンドウのサイズを変更できるようにします",
+    "en": "Allow window resizing"
+  },
+  "tooltip_monitor_select": {
+    "ja": "スライドショーを表示するモニターを選択します",
+    "en": "Select monitor for slideshow"
+  },
+  "tooltip_interval": {
+    "ja": "各画像の表示時間を設定します（1-60秒）",
+    "en": "Set display interval per image (1–60 seconds)"
+  },
+  "tooltip_order_name": {
+    "ja": "ファイル名順に画像を表示します",
+    "en": "Sort images by filename"
+  },
+  "tooltip_order_random": {
+    "ja": "ランダムな順序で画像を表示します",
+    "en": "Display images in random order"
+  },
+  "tooltip_front": {
+    "ja": "スライドショーを他のウィンドウより前面に表示します",
+    "en": "Keep slideshow above other windows"
+  },
+  "tooltip_back": {
+    "ja": "スライドショーを他のウィンドウより背面に表示します",
+    "en": "Send slideshow behind other windows"
+  },
+  "tooltip_fit_cover": {
+    "ja": "画像を画面全体に表示します（一部がトリミングされる場合があります）",
+    "en": "Fill screen (image may be cropped)"
+  },
+  "tooltip_fit_contain": {
+    "ja": "画像全体が見えるように表示します（黒い余白が表示される場合があります）",
+    "en": "Fit image within screen (may show borders)"
+  },
+    "tooltip_show_filename": {
+    "ja": "画像の下部にファイル名を表示します",
+    "en": "Show filename at the bottom of the image"
+  },
+  "tooltip_v_pos": {
+    "ja": "ファイル名の垂直位置を設定します",
+    "en": "Set vertical position of filename"
+  },
+  "tooltip_h_pos": {
+    "ja": "ファイル名の水平位置を設定します",
+    "en": "Set horizontal position of filename"
+  },
+  "tooltip_font_select": {
+    "ja": "ファイル名表示に使用するフォントを選択します",
+    "en": "Select font used for filename display"
+  },
+  "tooltip_filename_v_offset": {
+    "ja": "ファイル名の垂直位置を微調整します\n（マイナス値で上、プラス値で下に移動）",
+    "en": "Fine-tune filename vertical position\n(negative = up, positive = down)"
+  },
+  "tooltip_filename_h_offset": {
+    "ja": "ファイル名の水平位置を微調整します\n（マイナス値で左、プラス値で右に移動）",
+    "en": "Fine-tune filename horizontal position\n(negative = left, positive = right)"
+  },
+  "tooltip_crossfade": {
+    "ja": "画像が徐々に切り替わるクロスフェード効果",
+    "en": "Crossfade transition between images"
+  },
+  "tooltip_slide": {
+    "ja": "画像が上下左右からスライドして切り替わる効果",
+    "en": "Slide transition from directions"
+  },
+  "tooltip_zoom": {
+    "ja": "ズームイン・ズームアウトしながら切り替わる効果",
+    "en": "Zoom in/out transition effect"
+  },
+  "tooltip_wipe": {
+    "ja": "画像が8方向からワイプして切り替わる効果",
+    "en": "Wipe transition from 8 directions"
+  },
+  "tooltip_fade_to_black": {
+    "ja": "一度黒画面になってから次の画像に切り替わる効果",
+    "en": "Fade to black between images"
+  },
+    "tooltip_effect_order": {
+    "ja": "選択されたエフェクトを順番に適用します",
+    "en": "Apply selected effects in order"
+  },
+  "tooltip_effect_random": {
+    "ja": "選択されたエフェクトをランダムに適用します",
+    "en": "Apply selected effects randomly"
+  },
+  "tooltip_fade_duration": {
+    "ja": "画像切り替え時のエフェクト時間を設定します（0.1-10.0秒）",
+    "en": "Set transition effect duration (0.1-10.0s)"
+  },
+  "tooltip_ken_burns": {
+    "ja": "画像にゆっくりとしたズーム・パン効果を適用します\n映画的な動きのある表示になります",
+    "en": "Apply slow zoom and pan (Ken Burns effect)\nCreates cinematic motion"
+  },
+  "tooltip_ken_intensity": {
+    "ja": "Ken Burns効果の強度を調整します\n1:控えめな動き ← → 10:ダイナミックな動き\n速度は表示時間にも依存します",
+    "en": "Adjust Ken Burns intensity\n1: subtle ← → 10: dynamic\nSpeed depends on display duration"
+  },
+  "tooltip_about_button": {
+    "ja": "アプリケーションのバージョン情報と機能説明を表示します",
+    "en": "Show application version and information"
+  },
+  "log_icon_missing": {
+    "ja": "icon.icoが見つかりませんシステムアイコンを使用します",
+    "en": "icon.ico not found, using system icon"
+  },
+  "msg_restart_required": {
+    "ja": "設定変更を反映するため、スライドショーを再起動します",
+    "en": "Restart required to apply settings"
+  },
+    "error_missing_setting_key": {
+    "ja": "必須設定が見つかりません",
+    "en": "Required setting not found"
+  },
+  "error_invalid_interval_range": {
+    "ja": "切替時間は1〜3600秒の範囲で設定してください",
+    "en": "Interval must be between 1 and 3600 seconds"
+  },
+  "error_invalid_effect_duration_range": {
+    "ja": "切替エフェクト時間は1〜10秒の範囲で設定してください",
+    "en": "Effect duration must be between 1 and 10 seconds"
+  },
+  "error_monitor_out_of_range": {
+    "ja": "モニター番号が範囲外です（利用可能: 0〜{max_monitor}）",
+    "en": "Monitor index out of range (available: 0 to {max_monitor})"
+  },
+  "error_profile_write_failed": {
+    "ja": "プロファイルファイルの書き込みに失敗しました: {e}",
+    "en": "Failed to write profile file: {e}"
+  },
+  "error_settings_validation": {
+    "ja": "設定エラー",
+    "en": "Settings error"
+  },
+  "font_bold_label": {
+    "ja": "太字",
+    "en": "Bold"
+  },
+  "font_regular_label": {
+    "ja": "標準",
+    "en": "Regular"
+  },
+  "error_profile_deleted_external": {
+    "ja": "プロファイル '{profile}' は他のプロセスで削除されました\nDefaultプロファイルに切り替えます",
+    "en": "Profile '{profile}' was deleted externally\nSwitching to Default profile"
+  },
+  "error_profile_save_failed": {
+    "ja": "プロファイルの保存中にエラーが発生しました:\n{e}",
+    "en": "Error occurred while saving profile:\n{e}"
+  },
+    "msg_profile_unsaved_changes": {
+    "ja": "プロファイル '{profile_name}' に未保存の変更があります\n保存しますか？",
+    "en": "Profile '{profile_name}' has unsaved changes\nDo you want to save?"
+  },
+  "btn_discard": {
+    "ja": "破棄",
+    "en": "Discard"
+  },
+  "dialog_new_profile": {
+    "ja": "新規プロファイル",
+    "en": "New Profile"
+  },
+  "msg_enter_new_profile_name": {
+    "ja": "新しいプロファイル名を入力:",
+    "en": "Enter new profile name:"
+  },
+  "warn_profile_exists": {
+    "ja": "そのプロファイル名は既に存在します",
+    "en": "That profile name already exists"
+  },
+  "warn_default_profile_rename": {
+    "ja": "Defaultプロファイルの名前は変更できません",
+    "en": "Default profile name cannot be changed"
+  },
+  "dialog_profile_rename": {
+    "ja": "プロファイルの名前変更",
+    "en": "Rename Profile"
+  },
+  "msg_enter_new_profile_name_for": {
+    "ja": "プロファイル '{profile}' の新しい名前を入力:",
+    "en": "Enter new name for profile '{profile}':"
+  },
+  "warn_profile_name_empty": {
+    "ja": "プロファイル名は空にできません",
+    "en": "Profile name cannot be empty"
+  },
+  "dialog_profile_duplicate": {
+    "ja": "プロファイルの複製",
+    "en": "Duplicate Profile"
+  },
+  "msg_enter_duplicate_profile_name_for": {
+    "ja": "'{profile}' の複製名を入力:",
+    "en": "Enter duplicate name for '{profile}':"
+  },
+  "msg_duplicate_done": {
+    "ja": "複製完了",
+    "en": "Duplication completed"
+  },
+  "msg_profile_created": {
+    "ja": "プロファイル '{profile}' を作成しました",
+    "en": "Profile '{profile}' created"
+  },
+  "warn_default_profile_delete": {
+    "ja": "Defaultプロファイルは削除できません",
+    "en": "Default profile cannot be deleted"
+  },
+  "msg_profile_delete_confirm": {
+    "ja": "プロファイル '{profile}' を削除しますか？",
+    "en": "Delete profile '{profile}'?"
+  },
+  "dialog_shortcut_save_title": {
+    "ja": "'{profile}' プロファイルのショートカットを保存",
+    "en": "Save shortcut for profile '{profile}'"
+  },
+  "filetype_shortcut": {
+    "ja": "ショートカット (*.lnk)",
+    "en": "Shortcut (*.lnk)"
+  },
+  "msg_shortcut_created_title": {
+    "ja": "ショートカット作成完了",
+    "en": "Shortcut created"
+  },
+  "msg_shortcut_created": {
+    "ja": "プロファイル '{profile}' のショートカットを作成しました",
+    "en": "Shortcut for profile '{profile}' was created"
+  },
+  "error_shortcut_creation": {
+    "ja": "ショートカット作成エラー: {e}",
+    "en": "Shortcut creation error: {e}"
+  },
+  "error_shortcut_failed": {
+    "ja": "ショートカット作成に失敗しました: {e}",
+    "en": "Failed to create shortcut: {e}"
+  },
+  "msg_pywin32_missing": {
+    "ja": "pywin32がインストールされていないため、バッチファイルを作成しました\nファイル: {path}",
+    "en": "pywin32 is not installed. A batch file has been created.\nFile: {path}"
+  },
+  "dialog_backup_title": {
+    "ja": "プロファイル設定のバックアップ",
+    "en": "Profile settings backup"
+  },
+  "filetype_json": {
+    "ja": "JSON ファイル (*.json);;すべてのファイル (*)",
+    "en": "JSON files (*.json);;All files (*)"
+  },
+  "msg_backup_done": {
+    "ja": "バックアップ完了",
+    "en": "Backup completed"
+  },
+  "msg_backup_saved": {
+    "ja": "プロファイル設定をバックアップしました\n\n保存先: {path}",
+    "en": "Profile settings backed up\n\nSaved to: {path}"
+  },
+  "error_profile_file_not_found": {
+    "ja": "プロファイルファイルが見つかりません",
+    "en": "Profile file not found"
+  },
+  "dialog_backup_error_title": {
+    "ja": "バックアップエラー",
+    "en": "Backup error"
+  },
+  "error_backup_failed": {
+    "ja": "バックアップに失敗しました:\n{e}",
+    "en": "Backup failed:\n{e}"
+  },
+  "dialog_restore_title": {
+    "ja": "プロファイル設定のリストア",
+    "en": "Restore profile settings"
+  },
+  "dialog_restore_confirm_title": {
+    "ja": "リストア確認",
+    "en": "Restore confirmation"
+  },
+  "msg_restore_confirm": {
+    "ja": "現在のプロファイル設定がすべて置き換えられます\n続行しますか？\n\n※現在の設定は失われます事前にバックアップを取ることをお勧めします",
+    "en": "All current profile settings will be replaced\nContinue?\n\nNote: Current settings will be lost. It is recommended to create a backup first"
+  },
+  "msg_restore_done_title": {
+    "ja": "リストア完了",
+    "en": "Restore completed"
+  },
+  "msg_restore_done": {
+    "ja": "プロファイル設定をリストアしました\n\n変更を反映するには、アプリケーションを再起動してください",
+    "en": "Profile settings restored\n\nPlease restart the application to apply changes"
+  },
+  "error_invalid_backup_file": {
+    "ja": "選択されたファイルは有効なバックアップファイルではありません",
+    "en": "Selected file is not a valid backup file"
+  },
+  "dialog_restore_error_title": {
+    "ja": "リストアエラー",
+    "en": "Restore error"
+  },
+  "error_restore_failed": {
+    "ja": "リストアに失敗しました:\n{e}",
+    "en": "Restore failed:\n{e}"
+  },
+  "dialog_folder_select": {
+    "ja": "画像フォルダの選択",
+    "en": "Select image folder"
+  },
+    "warning_folder_duplicate": {
+    "ja": "そのフォルダは既に追加されています",
+    "en": "This folder has already been added"
+  },
+  "dialog_font_select": {
+    "ja": "フォントの選択",
+    "en": "Select font"
+  },
+  "error_profile_not_loaded": {
+    "ja": "プロファイルがロードされていません",
+    "en": "Profile has not been loaded"
+  },
+  "error_image_list_failed": {
+    "ja": "フォルダ: {folder} の画像リストアップ中にエラーが発生しました: {e}",
+    "en": "Error listing images in folder: {folder}: {e}"
+  },
+  "warning_no_images_found": {
+    "ja": "表示する画像ファイルが見つかりませんフォルダ設定を確認してください",
+    "en": "No image files found, Please check folder settings"
+  },
+  "error_slideshow_window_missing": {
+    "ja": "SlideShowWindowクラスが未定義ですスライドショーを開始できません",
+    "en": "SlideShowWindow class is not defined, Cannot start slideshow"
+  },
+  "error_slideshow_start_failed": {
+    "ja": "スライドショーの開始に失敗しました:\n{e}",
+    "en": "Failed to start slideshow:\n{e}"
+  },
+  "tray_system": {
+    "ja": "システムトレイ",
+    "en": "System tray"
+  },
+  "tray_not_available": {
+    "ja": "システムトレイが利用できません",
+    "en": "System tray is not available"
+  },
+    "tray_profile_switch": {
+    "ja": "プロファイル切り替え",
+    "en": "Switch profile"
+  },
+  "tray_pause_resume": {
+    "ja": "一時停止/再開",
+    "en": "Pause/Resume"
+  },
+  "tray_exit": {
+    "ja": "終了",
+    "en": "Exit"
+  },
+  "log_no_images_show_window": {
+    "ja": "画像ファイルが見つかりませんが、スライドショーウィンドウを表示します",
+    "en": "No images found, but showing slideshow window"
+  },
+  "error_profile_name_missing": {
+    "ja": "エラー: プロファイル名が指定されていません",
+    "en": "Error: Profile name is not specified"
+  }
+}
