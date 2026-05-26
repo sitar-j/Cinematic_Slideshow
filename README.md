@@ -7,6 +7,7 @@
 
 ### Installation
 - It operates as a standalone application（スタンドアローンで動作します）
+- Works on Windows 11（Windows11で動作します）
 
 ### Usage（使い方）
 #### Basic Usage（基本的な使い方）
