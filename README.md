@@ -32,11 +32,11 @@
 - Language: English / Japanese（日本語）
 
 ### Controls（操作方法）
-### Keyboard（キーボード）
+#### Keyboard（キーボード）
 - Space: Pause（一時停止）/Resume（再開）
 - Esc: Exit（終了）
 
-### Mouse（マウス）
+#### Mouse（マウス）
 - Right-click（右クリック）: Display context menu（コンテキストメニュー表示）
 
 ### Supported Formats（対応フォーマット）
