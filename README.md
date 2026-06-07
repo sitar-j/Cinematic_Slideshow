@@ -1,12 +1,6 @@
 # Cinematic_Slideshow
 - A slideshow application with cinematic effects
 
-### Improvements
-- Reorganized the settings screen into tabs.
-- Added selectable Ken Burns effect types.
-- Added a new Ken Burns effect: Edge Scan (Pan & Scan mode only).
-- Added random/sequential order options for Ken Burns effects.
-
 ### Installation
 - It operates as a standalone application（スタンドアローンで動作します）
 - Works on Windows 11（Windows11で動作します）
