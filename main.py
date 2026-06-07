@@ -1210,6 +1210,7 @@ class SlideShowWindow (QtWidgets .QWidget ):
                     self .current_item .setOpacity (0.0 )
                 if self .next_item :
                     self .next_item .setOpacity (1.0 )
+            # addp1
             elif self .next_effect =="crossfade":
                 self ._apply_crossfade_opacity (effect_t_eased )
             if self .next_effect =="crossfade":
@@ -1218,6 +1219,10 @@ class SlideShowWindow (QtWidgets .QWidget ):
                 self ._apply_zoom_scale_opacity (effect_t_eased )
             elif self .next_effect =="wipe":
                 self ._apply_wipe_mask (effect_t_eased )
+            elif self.next_effect == "grid":
+                self._apply_grid_effect(effect_t_eased)
+            elif self.next_effect == "shutter":
+                self._apply_shutter_effect(effect_t_eased)
             elif self .next_effect =="fade_to_black":
                 self ._apply_fade_to_black_effect (effect_t_eased )
 
@@ -1892,7 +1897,119 @@ class SlideShowWindow (QtWidgets .QWidget ):
         if self .next_item :
             self .next_item .setOpacity (1.0 )
             self .next_item .setZValue (2.0 )
+            
+    def _apply_grid_effect(self, t: float):
+        if not self.current_item or not self.next_item:
+            return
 
+        rows = 7
+        cols = 7
+        total = rows * cols
+        visible_count = int(total * t)
+
+        self.current_item.setOpacity(1.0)
+        self.current_item.setZValue(0.0)
+
+        self.next_item.setOpacity(1.0)
+        self.next_item.setZValue(2.0)
+
+        if not hasattr(self, "_grid_original_pixmap"):
+            self._grid_original_pixmap = self.next_item.pixmap()
+
+        pixmap = self._grid_original_pixmap
+        if pixmap.isNull():
+            return
+
+        if not hasattr(self, "_grid_cells"):
+            cells = [(r, c) for r in range(rows) for c in range(cols)]
+            random.shuffle(cells)
+            self._grid_cells = cells
+
+        masked = QtGui.QPixmap(pixmap.size())
+        masked.fill(QtCore.Qt.transparent)
+
+        painter = QtGui.QPainter(masked)
+
+        sw = pixmap.width()
+        sh = pixmap.height()
+        cell_w = sw / cols
+        cell_h = sh / rows
+
+        for r, c in self._grid_cells[:visible_count]:
+            rect = QtCore.QRect(
+                int(c * cell_w),
+                int(r * cell_h),
+                int(cell_w + 1),
+                int(cell_h + 1)
+            )
+            painter.drawPixmap(rect, pixmap, rect)
+
+        painter.end()
+
+        self.next_item.setPixmap(masked)
+
+        if t >= 1.0:
+            self.next_item.setPixmap(pixmap)
+            self.current_item.setOpacity(0.0)
+            
+    def _apply_shutter_effect(self, t: float):
+        if not self.current_item or not self.next_item:
+            return
+
+        bands = 16
+
+        self.current_item.setOpacity(1.0)
+        self.current_item.setZValue(0.0)
+
+        self.next_item.setOpacity(1.0)
+        self.next_item.setZValue(2.0)
+
+        if not hasattr(self, "_shutter_original_pixmap"):
+            self._shutter_original_pixmap = self.next_item.pixmap()
+
+        pixmap = self._shutter_original_pixmap
+        if pixmap.isNull():
+            return
+
+        masked = QtGui.QPixmap(pixmap.size())
+        masked.fill(QtCore.Qt.transparent)
+
+        painter = QtGui.QPainter(masked)
+
+        sw = pixmap.width()
+        sh = pixmap.height()
+
+        if sw >= sh:
+            band_w = sw / bands
+
+            for i in range(bands):
+                x = int(i * band_w)
+                w = int((band_w + 1) * t)
+
+                rect = QtCore.QRect(x, 0, w, sh)
+                source_rect = QtCore.QRect(x, 0, w, sh)
+
+                painter.drawPixmap(rect, pixmap, source_rect)
+        else:
+            band_h = sh / bands
+
+            for i in range(bands):
+                y = int(i * band_h)
+                h = int((band_h + 1) * t)
+
+                rect = QtCore.QRect(0, y, sw, h)
+                source_rect = QtCore.QRect(0, y, sw, h)
+
+                painter.drawPixmap(rect, pixmap, source_rect)
+
+        painter.end()
+
+        self.next_item.setPixmap(masked)
+
+        if t >= 1.0:
+            self.next_item.setPixmap(pixmap)
+            self.current_item.setOpacity(0.0)
+        
     def _calculate_ken_burns_t (self ,t_linear ):
         return t_linear 
 
@@ -1915,6 +2032,7 @@ class SlideShowWindow (QtWidgets .QWidget ):
             self .current_effect =self .next_effect 
             self .next_effect =None 
 
+        # addp2
         if hasattr (self ,'transition_start_time'):
             delattr (self ,'transition_start_time')
 
@@ -1934,7 +2052,16 @@ class SlideShowWindow (QtWidgets .QWidget ):
         if hasattr (self ,'_wipe_mask')and self ._wipe_mask :
             if self ._wipe_mask .scene ()==self .scene :
                 self .scene .removeItem (self ._wipe_mask )
-            self ._wipe_mask =None 
+            self ._wipe_mask =None
+        
+        if hasattr(self, "_grid_cells"):
+            delattr(self, "_grid_cells")
+
+        if hasattr(self, "_grid_original_pixmap"):
+            delattr(self, "_grid_original_pixmap")
+            
+        if hasattr(self, "_shutter_original_pixmap"):
+            delattr(self, "_shutter_original_pixmap")
 
         if self .next_item and self .current_item and self .current_item .scene ()==self .scene :
             self .scene .removeItem (self .current_item )
@@ -2480,20 +2607,21 @@ class MainWindow (QtWidgets .QWidget ):
         self .filename_h_offset_spin .setValue (0 )
         self .filename_h_offset_spin .setSuffix (" px")
 
+        # addp3
         self .chk_crossfade =QtWidgets .QCheckBox (tr("effect_crossfade"))
         self .chk_crossfade .setChecked (True )
-
         self .chk_slide =QtWidgets .QCheckBox (tr("effect_slide"))
         self .chk_slide .setChecked (False )
-
         self .chk_zoom =QtWidgets .QCheckBox (tr("effect_zoom"))
         self .chk_zoom .setChecked (False )
-
         self .chk_wipe =QtWidgets .QCheckBox (tr("effect_wipe"))
         self .chk_wipe .setChecked (False )
-
+        self .chk_grid = QtWidgets.QCheckBox(tr("effect_grid"))
+        self .chk_grid.setChecked(False)
+        self .chk_shutter = QtWidgets.QCheckBox(tr("effect_shutter"))
+        self .chk_shutter.setChecked(False)
         self .chk_fade_to_black =QtWidgets .QCheckBox (tr("effect_fade_to_black"))
-        self .chk_fade_to_black .setChecked (False )
+        self .chk_fade_to_black .setChecked (False )  
 
         self .radio_effect_order =QtWidgets .QRadioButton (tr("effect_order_sequential"))
         self .radio_effect_random =QtWidgets .QRadioButton (tr("effect_order_random"))
@@ -2699,13 +2827,16 @@ class MainWindow (QtWidgets .QWidget ):
         effect_group =QtWidgets .QGroupBox (tr("group_effect"))
         effect_layout =QtWidgets .QVBoxLayout (effect_group )
 
+        # addp4
         transition_group =QtWidgets .QGroupBox (tr("group_transition"))
         transition_layout =QtWidgets .QGridLayout (transition_group )
         transition_layout .addWidget (self .chk_crossfade ,0 ,0 )
         transition_layout .addWidget (self .chk_slide ,0 ,1 )
         transition_layout .addWidget (self .chk_zoom ,0 ,2 )
-        transition_layout .addWidget (self .chk_wipe ,1 ,0 )
-        transition_layout .addWidget (self .chk_fade_to_black ,1 ,1 )
+        transition_layout .addWidget (self .chk_wipe ,0 ,3 )
+        transition_layout.addWidget(self.chk_grid, 1, 0)
+        transition_layout.addWidget(self.chk_shutter, 1, 1)
+        transition_layout .addWidget (self .chk_fade_to_black ,1 ,2 )
 
         effect_order_layout =QtWidgets .QHBoxLayout ()
         effect_order_layout.addWidget(QtWidgets.QLabel(tr("label_effect_order")))
@@ -2843,8 +2974,8 @@ class MainWindow (QtWidgets .QWidget ):
 
         version_info = QtWidgets.QLabel("""
         <p style='margin: 5px 0; color: #7f8c8d; font-size: 12px;'>
-        <b>Version :</b> 2.1<br>
-        <b>Release :</b> May, 2026<br>
+        <b>Version :</b> 2.2<br>
+        <b>Release :</b> June, 2026<br>
         <b>Build :</b> Python + PyQt5
         </p>
         """)
@@ -3044,11 +3175,14 @@ class MainWindow (QtWidgets .QWidget ):
         self .filename_v_offset_spin.setToolTip(tr("tooltip_filename_v_offset"))
         self .filename_h_offset_spin.setToolTip(tr("tooltip_filename_h_offset"))
 
+        # addp5
         self .chk_crossfade .setToolTip (tr("tooltip_crossfade"))
         self .chk_slide .setToolTip (tr("tooltip_slide"))
         self .chk_zoom .setToolTip (tr("tooltip_zoom"))
         self .chk_wipe .setToolTip (tr("tooltip_wipe"))
         self .chk_fade_to_black .setToolTip (tr("tooltip_fade_to_black"))
+        self .chk_grid.setToolTip(tr("tooltip_grid"))
+        self.chk_shutter.setToolTip(tr("tooltip_shutter"))
 
         self .radio_effect_order .setToolTip (tr("tooltip_effect_order"))
         self .radio_effect_random .setToolTip (tr("tooltip_effect_random"))
@@ -3057,8 +3191,6 @@ class MainWindow (QtWidgets .QWidget ):
 
         self .chk_ken.setToolTip(tr("tooltip_ken_burns"))
         self .ken_intensity_slider.setToolTip(tr("tooltip_ken_intensity"))
-
-        # self .btn_about .setToolTip (tr("tooltip_about_button"))
 
     def _set_application_icon (self ):
         icon_set =False 
@@ -3207,12 +3339,15 @@ class MainWindow (QtWidgets .QWidget ):
         "font_bold":self .DEFAULT_FONT_BOLD ,
         "filename_v_offset":0 ,
         "filename_h_offset":0 ,
+        # addp6
         "effects":{
         "crossfade":True ,
         "slide":False ,
         "zoom":False ,
         "wipe":False ,
         "fade_to_black":False ,
+        "grid": False,
+        "shutter": False,
         },
         "effect_order":"random",
         }
@@ -3424,12 +3559,15 @@ class MainWindow (QtWidgets .QWidget ):
         self .btn_profile_rename .setEnabled (not is_default )
         self .btn_profile_duplicate .setEnabled (True )
 
+        # addp7
         effects =config .get ("effects",{})
         self .chk_crossfade .setChecked (effects .get ("crossfade",True ))
         self .chk_slide .setChecked (effects .get ("slide",False ))
         self .chk_zoom .setChecked (effects .get ("zoom",False ))
         self .chk_wipe .setChecked (effects .get ("wipe",False ))
         self .chk_fade_to_black .setChecked (effects .get ("fade_to_black",False ))
+        self .chk_grid .setChecked(effects.get("grid", False))
+        self .chk_shutter.setChecked(effects.get("shutter", False))
 
         effect_order =config .get ("effect_order","random")
         self .radio_effect_random .setChecked (effect_order =="random")
@@ -3506,12 +3644,15 @@ class MainWindow (QtWidgets .QWidget ):
             config ["filename_v_offset"]=self .filename_v_offset_spin .value ()
             config ["filename_h_offset"]=self .filename_h_offset_spin .value ()
 
+            # addp8
             config ["effects"]={
             "crossfade":self .chk_crossfade .isChecked (),
             "slide":self .chk_slide .isChecked (),
             "zoom":self .chk_zoom .isChecked (),
             "wipe":self .chk_wipe .isChecked (),
             "fade_to_black":self .chk_fade_to_black .isChecked (),
+            "grid": self.chk_grid.isChecked(),
+            "shutter": self.chk_shutter.isChecked(),
             }
             config ["effect_order"]="random"if self .radio_effect_random .isChecked ()else "sequential"
 
@@ -3595,12 +3736,15 @@ class MainWindow (QtWidgets .QWidget ):
         "font_bold":self .current_font_bold ,
         "filename_v_offset":self .filename_v_offset_spin .value (),
         "filename_h_offset":self .filename_h_offset_spin .value (),
+        # addp9
         "effects":{
         "crossfade":self .chk_crossfade .isChecked (),
         "slide":self .chk_slide .isChecked (),
         "zoom":self .chk_zoom .isChecked (),
         "wipe":self .chk_wipe .isChecked (),
         "fade_to_black":self .chk_fade_to_black .isChecked (),
+        "grid": self.chk_grid.isChecked(),
+        "shutter": self.chk_shutter.isChecked(),
         },
         "effect_order":"random"if self .radio_effect_random .isChecked ()else "sequential",
         }
@@ -4085,7 +4229,6 @@ class MainWindow (QtWidgets .QWidget ):
 
         image_files =[]
         folders =config .get ("folders",[])
-        total_folders =len (config .get ("folders",[]))
 
         for idx ,item in enumerate (folders ):
             if isinstance (item ,(list ,tuple ))and len (item )==2 :
@@ -4118,12 +4261,15 @@ class MainWindow (QtWidgets .QWidget ):
 
         try :
             self .hide ()
+            # addp10
             effects ={
             "crossfade":self .chk_crossfade .isChecked (),
             "slide":self .chk_slide .isChecked (),
             "zoom":self .chk_zoom .isChecked (),
             "wipe":self .chk_wipe .isChecked (),
             "fade_to_black":self .chk_fade_to_black .isChecked (),
+            "grid": self.chk_grid.isChecked(),
+            "shutter": self.chk_shutter.isChecked(),
             }
             effect_order ="random"if self .radio_effect_random .isChecked ()else "sequential"
             self .slideshow_window =SlideShowWindow (

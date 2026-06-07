@@ -843,7 +843,23 @@
   "en": "Type"
   },
   "note_ken_edge_scan_disabled": {
-    "ja": "edge_scan はパン＆スキャン表示時のみ有効です。",
-    "en": "edge_scan is available only when using Crop to fill."
+    "ja": "edge_scan はパン＆スキャン表示時のみ有効です",
+    "en": "edge_scan is available only when using Crop to fill"
+  },
+  "effect_grid": {
+    "ja": "グリッド",
+    "en": "Grid"
+  },
+  "tooltip_grid": {
+    "ja": "画像を5×5の小さな領域に分けて、ランダム順に次の画像へ切り替えます",
+    "en": "Reveals the next image through a randomized 5x5 grid"
+  },
+  "effect_shutter": {
+    "ja": "シャッター",
+    "en": "Shutter"
+  },
+  "tooltip_shutter": {
+    "ja": "縦方向の帯が順に開いて、次の画像を表示します",
+    "en": "Reveals the next image through vertical shutter bands"
   }
 }
