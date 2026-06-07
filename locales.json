@@ -151,6 +151,10 @@
     "ja": "追加",
     "en": "Add"
   },
+  "group_profile_management": {
+  "ja": "プロファイル管理",
+  "en": "Profile Management"
+  },
   "chk_include_subfolders": {
     "ja": "サブフォルダを含める",
     "en": "Include subfolders"
@@ -817,5 +821,29 @@
   "error_profile_name_missing": {
     "ja": "エラー: プロファイル名が指定されていません",
     "en": "Error: Profile name is not specified"
+  },
+    "tab_general": {
+    "ja": "全般",
+    "en": "General"
+  },
+  "tab_display": {
+    "ja": "表示",
+    "en": "Display"
+  },
+  "tab_effect": {
+    "ja": "エフェクト",
+    "en": "Effects"
+  },
+  "tab_info": {
+    "ja": "情報",
+    "en": "Info"
+  },
+  "label_ken_burns_type": {
+  "ja": "種類",
+  "en": "Type"
+  },
+  "note_ken_edge_scan_disabled": {
+    "ja": "edge_scan はパン＆スキャン表示時のみ有効です。",
+    "en": "edge_scan is available only when using Crop to fill."
   }
 }
