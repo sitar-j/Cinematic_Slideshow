@@ -180,7 +180,6 @@ class SlideShowWindow (QtWidgets .QWidget ):
         self .effects =config .get ("effects",{"crossfade":True })
         self .effect_order =config .get ("effect_order","random")
         self .enabled_effects =[k for k ,v in self .effects .items ()if v ]
-
         self .slide_timer .stop ()
         self .animation_timer .stop ()
         self .animating =False 
@@ -228,7 +227,24 @@ class SlideShowWindow (QtWidgets .QWidget ):
             effect =self .enabled_effects [self .current_effect_index ]
 
             self .current_effect_index =(self .current_effect_index +1 )%len (self .enabled_effects )
-            return effect 
+            return effect
+    
+    def _select_next_ken_burns_pattern (self ):
+        patterns =self .enabled_ken_burns_patterns [:]
+
+        if self .fit_mode !="cover":
+            patterns =[p for p in patterns if p !="edge_scan"]
+        if not patterns :
+            return "none"
+        if self .ken_burns_order =="random":
+            return random .choice (patterns )
+
+        pattern =patterns [self .current_ken_burns_index %len (patterns )]
+        self .current_ken_burns_index =(
+        self .current_ken_burns_index +1 
+        )%len (patterns )
+
+        return pattern 
 
     def showEvent (self ,event ):
         super ().showEvent (event )
@@ -305,6 +321,8 @@ class SlideShowWindow (QtWidgets .QWidget ):
     window_resizable :bool =True ,
     stay_on_top :bool =True ,
     interval_sec :int =5 ,
+    ken_burns_patterns :Dict [str ,bool ]=None ,
+    ken_burns_order :str ="random",
     ken_burns :bool =True ,
     ken_intensity :int =5 ,
     random_order :bool =True ,
@@ -331,7 +349,25 @@ class SlideShowWindow (QtWidgets .QWidget ):
         self .main_window =main_window 
         self .interval_ms =max (1 ,int (interval_sec *1000 ))
         self .ken_burns =ken_burns 
-        self .ken_intensity =ken_intensity 
+        self .ken_intensity =ken_intensity
+        self .ken_burns_patterns =ken_burns_patterns or {
+        "linear":True ,
+        "arc":True ,
+        "wave":True ,
+        "spiral_in":True ,
+        "zigzag":True ,
+        "edge_scan":False ,
+        }
+
+        self .ken_burns_order =ken_burns_order 
+        self .enabled_ken_burns_patterns =[
+        k for k ,v in self .ken_burns_patterns .items ()if v 
+        ]
+
+        if not self .enabled_ken_burns_patterns :
+            self .enabled_ken_burns_patterns =["linear"]
+
+        self .current_ken_burns_index =0 
         self .fit_mode =fit_mode 
         self .fade_duration_ms =fade_duration_ms 
         self .show_filename =show_filename 
@@ -837,7 +873,7 @@ class SlideShowWindow (QtWidgets .QWidget ):
         pixmap_item =QtWidgets .QGraphicsPixmapItem ()
 
         if self .ken_burns :
-
+            self .current_movement_pattern =self ._select_next_ken_burns_pattern ()
             start_scale ,end_scale =self ._calculate_ken_burns_scales ()
             scaled_pixmap ,_ ,_ =self ._get_scaled_pixmap (pixmap ,for_anim =True )
             pixmap_item .setPixmap (scaled_pixmap )
@@ -1054,6 +1090,7 @@ class SlideShowWindow (QtWidgets .QWidget ):
             self .wipe_direction =random .choice (wipe_directions )
 
         if self .ken_burns :
+            self .current_movement_pattern =self ._select_next_ken_burns_pattern ()
             start_scale ,end_scale =self ._calculate_ken_burns_scales ()
         else :
             start_scale =end_scale =1.0 
@@ -1201,7 +1238,10 @@ class SlideShowWindow (QtWidgets .QWidget ):
             self ._finish_animation ()
 
     def _calculate_ken_burns_scales (self )->Tuple [float ,float ]:
-
+        if getattr (self ,"current_movement_pattern",None )=="none":
+            return 1.0 ,1.0 
+        if getattr (self ,"current_movement_pattern",None )=="edge_scan":
+            return 1.12 ,1.12
         base_zoom =self .ken_intensity *0.1 
 
         random_offset =(random .random ()-0.5 )*0.2 
@@ -1225,28 +1265,62 @@ class SlideShowWindow (QtWidgets .QWidget ):
         else :
             base_scale =min (vw /pixmap .width (),vh /pixmap .height ())
 
-        is_landscape =pixmap .width ()>pixmap .height ()
-
-        movement_pattern =random .choice (self .MOVEMENT_PATTERNS )
-
+        movement_pattern =getattr (self ,"current_movement_pattern",None )
+        if movement_pattern is None:
+            movement_pattern ="linear"
+        if movement_pattern =="none":
+            return 0 ,0 ,0 ,0
         self .current_movement_pattern =movement_pattern 
+        intensity_factor =self .ken_intensity /10.0
+        
+        if movement_pattern =="edge_scan"and self .fit_mode =="cover":
+            img_w =pixmap .width ()*base_scale *start_scale 
+            img_h =pixmap .height ()*base_scale *start_scale 
+            max_off_x =max (0 ,(img_w -vw )/2 )
+            max_off_y =max (0 ,(img_h -vh )/2 )
+            direction =random .choice ([-1 ,1 ])
 
-        intensity_factor =self .ken_intensity /10.0 
+            if max_off_x >=max_off_y and max_off_x >0 :
+                return (
+                int (-max_off_x *direction ),
+                0 ,
+                int (max_off_x *direction ),
+                0 
+                )
+            if max_off_y >0 :
+                return (
+                0 ,
+                int (-max_off_y *direction ),
+                0 ,
+                int (max_off_y *direction )
+                )
+
+            small_pan =min (vw ,vh )*0.06 
+            if vw >=vh :
+                return (
+                int (-small_pan *direction ),
+                0 ,
+                int (small_pan *direction ),
+                0 
+                )
+            else :
+                return (
+                0 ,
+                int (-small_pan *direction ),
+                0 ,
+                int (small_pan *direction )
+                )
 
         if self .fit_mode =="cover":
-
             end_img_w =pixmap .width ()*base_scale *end_scale 
             end_img_h =pixmap .height ()*base_scale *end_scale 
-
             end_max_off_x =max (0 ,(end_img_w -vw )/2 )
             end_max_off_y =max (0 ,(end_img_h -vh )/2 )
-
             start_img_w =pixmap .width ()*base_scale *start_scale 
             start_img_h =pixmap .height ()*base_scale *start_scale 
             start_max_off_x =max (0 ,(start_img_w -vw )/2 )
             start_max_off_y =max (0 ,(start_img_h -vh )/2 )
         else :
-
             start_img_w =pixmap .width ()*base_scale *start_scale 
             start_img_h =pixmap .height ()*base_scale *start_scale 
             start_max_off_x =max (0 ,(start_img_w -vw )/2 )
@@ -1255,13 +1329,11 @@ class SlideShowWindow (QtWidgets .QWidget ):
             end_max_off_y =0 
 
         if movement_pattern =="spiral_in":
-
             start_distance_factor =0.5 +random .random ()*0.2 
             self .spiral_start_angle =random .random ()*2 *math .pi 
             start_off_x =math .cos (self .spiral_start_angle )*start_max_off_x *start_distance_factor *intensity_factor 
             start_off_y =math .sin (self .spiral_start_angle )*start_max_off_y *start_distance_factor *intensity_factor 
         elif movement_pattern =="arc":
-
             if random .choice ([True ,False ]):
                 start_x_factor =0.7 +random .random ()*0.2 
                 start_y_factor =0.3 +random .random ()*0.3 
@@ -1271,28 +1343,22 @@ class SlideShowWindow (QtWidgets .QWidget ):
             start_off_x =random .choice ([-1 ,1 ])*start_max_off_x *start_x_factor *intensity_factor 
             start_off_y =random .choice ([-1 ,1 ])*start_max_off_y *start_y_factor *intensity_factor 
         else :
-
             start_distance_factor =0.7 +random .random ()*0.2 
             start_off_x =random .choice ([-1 ,1 ])*start_max_off_x *start_distance_factor *intensity_factor 
             start_off_y =random .choice ([-1 ,1 ])*start_max_off_y *start_distance_factor *intensity_factor 
 
         if self .fit_mode =="contain":
-
             end_off_x =0 
             end_off_y =0 
         else :
-
             if movement_pattern in ["wave","zigzag"]:
-
                 safe_factor =0.3 
                 end_off_x =random .uniform (-end_max_off_x *safe_factor ,end_max_off_x *safe_factor )
                 end_off_y =random .uniform (-end_max_off_y *safe_factor ,end_max_off_y *safe_factor )
             elif movement_pattern =="spiral_in":
-
                 end_off_x =0 
                 end_off_y =0 
             else :
-
                 end_distance_factor =random .random ()*0.4 
                 end_off_x =random .uniform (-end_max_off_x ,end_max_off_x )*end_distance_factor 
                 end_off_y =random .uniform (-end_max_off_y ,end_max_off_y )*end_distance_factor 
@@ -2316,7 +2382,7 @@ class MainWindow (QtWidgets .QWidget ):
     def __init__ (self ):
         super ().__init__ ()
         self .setWindowTitle (tr("title_profile_settings"))
-        self .resize (650 ,700 )
+        self .resize (650 ,570 )
 
         self .profiles ={}
         self .current_profile =None 
@@ -2442,6 +2508,24 @@ class MainWindow (QtWidgets .QWidget ):
         self .chk_ken =QtWidgets .QCheckBox (tr("effect_ken_burns"))
         self .chk_ken .setChecked (True )
 
+        self .chk_ken_linear =QtWidgets .QCheckBox ("linear")
+        self .chk_ken_arc =QtWidgets .QCheckBox ("arc")
+        self .chk_ken_wave =QtWidgets .QCheckBox ("wave")
+        self .chk_ken_spiral =QtWidgets .QCheckBox ("spiral_in")
+        self .chk_ken_zigzag =QtWidgets .QCheckBox ("zigzag")
+        self .chk_ken_edge_scan =QtWidgets .QCheckBox ("edge_scan")
+
+        self .chk_ken_linear .setChecked (True)
+        self .chk_ken_arc .setChecked (True)
+        self .chk_ken_wave .setChecked (True)
+        self .chk_ken_spiral .setChecked (True)
+        self .chk_ken_zigzag .setChecked (True)
+        self .chk_ken_edge_scan .setChecked (False)
+
+        self .radio_ken_order =QtWidgets .QRadioButton (tr("effect_order_sequential"))
+        self .radio_ken_random =QtWidgets .QRadioButton (tr("effect_order_random"))
+        self .radio_ken_random .setChecked (True)
+
         self .ken_intensity_slider =QtWidgets .QSlider (QtCore .Qt .Horizontal )
         self .ken_intensity_slider .setRange (1 ,10 )
         self .ken_intensity_slider .setValue (5 )
@@ -2456,11 +2540,7 @@ class MainWindow (QtWidgets .QWidget ):
         self .backup_label =QtWidgets .QLabel (tr("label_backup_restore"))
         self .btn_backup =QtWidgets .QPushButton (tr("btn_backup"))
         self .btn_restore =QtWidgets .QPushButton (tr("btn_restore"))
-
-        self .btn_about =QtWidgets .QPushButton (tr("btn_about"))
-        self .btn_about .setToolTip (tr("title_about"))
-        self .btn_about .clicked .connect (self ._show_about_dialog )
-        
+      
         self.language_combo = QtWidgets.QComboBox()
         self.language_combo.addItem("日本語", "ja")
         self.language_combo.addItem("English", "en")
@@ -2509,15 +2589,25 @@ class MainWindow (QtWidgets .QWidget ):
         profile_h .addStretch ()
         profile_layout .addLayout (profile_h )
 
-        shortcut_backup_h =QtWidgets .QHBoxLayout ()
-        shortcut_backup_h .addWidget (self .shortcut_label )
-        shortcut_backup_h .addWidget (self .btn_create_shortcut )
-        shortcut_backup_h .addSpacing (20 )
-        shortcut_backup_h .addWidget (self .backup_label )
-        shortcut_backup_h .addWidget (self .btn_backup )
-        shortcut_backup_h .addWidget (self .btn_restore )
-        shortcut_backup_h .addStretch ()
-        profile_layout .addLayout (shortcut_backup_h )
+        profile_manage_group = QtWidgets.QGroupBox(
+            tr("group_profile_management")
+        )
+
+        profile_manage_layout = QtWidgets.QVBoxLayout(profile_manage_group)
+
+        shortcut_h = QtWidgets.QHBoxLayout()
+        shortcut_h.addWidget(self.shortcut_label)
+        shortcut_h.addWidget(self.btn_create_shortcut)
+        shortcut_h.addStretch()
+
+        backup_h = QtWidgets.QHBoxLayout()
+        backup_h.addWidget(self.backup_label)
+        backup_h.addWidget(self.btn_backup)
+        backup_h.addWidget(self.btn_restore)
+        backup_h.addStretch()
+
+        profile_manage_layout.addLayout(shortcut_h)
+        profile_manage_layout.addLayout(backup_h)
 
         folder_group =QtWidgets .QGroupBox (tr("group_folder"))
         folder_layout =QtWidgets .QVBoxLayout (folder_group )
@@ -2633,37 +2723,243 @@ class MainWindow (QtWidgets .QWidget ):
         effect_layout .addLayout (time_h )
 
         image_effect_group =QtWidgets .QGroupBox (tr("group_image_effect"))
-        image_effect_layout =QtWidgets .QHBoxLayout (image_effect_group )
-        image_effect_layout .addWidget (self .chk_ken )
-        image_effect_layout.addWidget(QtWidgets.QLabel(tr("label_strength")))
-        image_effect_layout .addWidget (self .ken_intensity_slider )
-        image_effect_layout .addWidget (self .ken_intensity_label )
-        image_effect_layout .addStretch ()
-        effect_layout .addWidget (image_effect_group )
+        image_effect_layout =QtWidgets .QVBoxLayout (image_effect_group )
+        ken_top_h =QtWidgets .QHBoxLayout ()
+        ken_top_h .addWidget (self .chk_ken )
+        ken_top_h .addSpacing (20 )
+        ken_top_h .addWidget (QtWidgets .QLabel (tr("label_strength")))
+        ken_top_h .addWidget (self .ken_intensity_slider )
+        ken_top_h .addWidget (self .ken_intensity_label )
+        ken_top_h .addStretch ()
+        
+        ken_type_label =QtWidgets .QLabel (tr("label_ken_burns_type"))
+        ken_patterns_h =QtWidgets .QHBoxLayout ()
+        ken_patterns_h .addWidget (self .chk_ken_linear )
+        ken_patterns_h .addWidget (self .chk_ken_arc )
+        ken_patterns_h .addWidget (self .chk_ken_wave )
+        ken_patterns_h .addWidget (self .chk_ken_spiral )
+        ken_patterns_h .addWidget (self .chk_ken_zigzag )
+        ken_patterns_h .addWidget (self .chk_ken_edge_scan )
+        ken_patterns_h .addStretch ()
 
-        btn_h =QtWidgets .QHBoxLayout ()
-        btn_h .addWidget (self .btn_about )
-        btn_h.addSpacing(15)
-        btn_h.addWidget(
-            QtWidgets.QLabel(
-                tr("label_language")
-            )
-        )
-        btn_h.addWidget(
-            self.language_combo
-        )
-        btn_h .addStretch ()
-        btn_h .addWidget (self .button_box )
+        ken_order_h =QtWidgets .QHBoxLayout ()
+        ken_order_h .addWidget (QtWidgets .QLabel (tr("label_effect_order")))
+        ken_order_h .addWidget (self .radio_ken_order )
+        ken_order_h .addWidget (self .radio_ken_random )
+        ken_order_h .addStretch ()
+
+        ken_note =QtWidgets .QLabel (tr("note_ken_edge_scan_disabled"))
+        ken_note .setWordWrap (True)
+        ken_note .setStyleSheet ("color: #666; font-size: 11px;")
+
+        image_effect_layout .addLayout (ken_top_h )
+        image_effect_layout .addWidget (ken_type_label )
+        image_effect_layout .addLayout (ken_patterns_h )
+        image_effect_layout .addLayout (ken_order_h )
+        image_effect_layout .addWidget (ken_note )
+
+        effect_layout .addWidget (image_effect_group )
 
         self ._setup_tooltips ()
 
-        main_v =QtWidgets .QVBoxLayout (self )
-        main_v .addWidget (profile_group )
-        main_v .addWidget (folder_group )
-        main_v .addWidget (display_group )
-        main_v .addWidget (effect_group )
-        main_v .addLayout (btn_h )
-        main_v .addStretch (1 )
+        tabs = QtWidgets.QTabWidget()
+
+        general_tab = QtWidgets.QWidget()
+        general_layout = QtWidgets.QVBoxLayout(general_tab)
+
+        general_layout.addWidget(profile_group)
+        general_layout.addWidget(profile_manage_group)
+        general_layout.addWidget(folder_group)
+
+        language_group = QtWidgets.QGroupBox(tr("label_language"))
+        language_layout = QtWidgets.QHBoxLayout(language_group)
+        language_layout.addWidget(self.language_combo)
+        language_layout.addStretch()
+
+        general_layout.addWidget(language_group)
+        general_layout.addStretch(1)
+
+        display_tab = QtWidgets.QWidget()
+        display_tab_layout = QtWidgets.QVBoxLayout(display_tab)
+        display_tab_layout.addWidget(display_group)
+        display_tab_layout.addStretch(1)
+
+        effect_tab = QtWidgets.QWidget()
+        effect_tab_layout = QtWidgets.QVBoxLayout(effect_tab)
+        effect_tab_layout.addWidget(effect_group)
+        effect_tab_layout.addStretch(1)
+
+        info_tab = QtWidgets.QWidget()
+        info_tab_layout = QtWidgets.QVBoxLayout(info_tab)
+        info_tab_layout.setSpacing(8)
+        info_tab_layout.setContentsMargins(20, 15, 20, 10)
+
+        header_layout = QtWidgets.QHBoxLayout()
+        icon_label = QtWidgets.QLabel()
+
+        icon_found = False
+
+        try:
+            app = QtWidgets.QApplication.instance()
+            if app and not app.windowIcon().isNull():
+                pixmap = app.windowIcon().pixmap(64, 64)
+                if not pixmap.isNull():
+                    icon_label.setPixmap(pixmap)
+                    icon_found = True
+
+            if not icon_found and not self.windowIcon().isNull():
+                pixmap = self.windowIcon().pixmap(64, 64)
+                if not pixmap.isNull():
+                    icon_label.setPixmap(pixmap)
+                    icon_found = True
+        except Exception:
+            icon_found = False
+
+        if not icon_found:
+            icon_label.setText("🎬")
+            icon_label.setStyleSheet("""
+                font-size: 48px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background: white;
+                padding: 8px;
+            """)
+        else:
+            icon_label.setStyleSheet("""
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background: white;
+                padding: 8px;
+            """)
+
+        icon_label.setFixedSize(80, 80)
+        icon_label.setAlignment(QtCore.Qt.AlignCenter)
+
+        title_layout = QtWidgets.QVBoxLayout()
+
+        app_name = QtWidgets.QLabel(
+            "<h1 style='margin: 0; color: #2c3e50;'>Cinematic Slideshow</h1>"
+        )
+
+        version_info = QtWidgets.QLabel("""
+        <p style='margin: 5px 0; color: #7f8c8d; font-size: 12px;'>
+        <b>Version :</b> 2.1<br>
+        <b>Release :</b> May, 2026<br>
+        <b>Build :</b> Python + PyQt5
+        </p>
+        """)
+
+        title_layout.addWidget(app_name)
+        title_layout.addWidget(version_info)
+        title_layout.addStretch()
+
+        header_layout.addWidget(icon_label)
+        header_layout.addLayout(title_layout)
+
+        license_info = QtWidgets.QLabel()
+        license_info.setWordWrap(True)
+        license_info.setOpenExternalLinks(True)
+        license_info.setStyleSheet("""
+            font-size: 12px;
+            color: #495057;
+            background-color: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 10px;
+            margin: 10px 0;
+            line-height: 1.3;
+        """)
+        license_info.setText("""
+        <p><b>📄 Open source license:</b></p>
+        <ul style="margin: 8px 0 0 18px; padding: 0;">
+        <li><b>Software :</b> GPL v3 License</li>
+        <li><b>PyQt5:</b> GPL v3 - Riverbank Computing</li>
+        <li><b>Python:</b> PSF License</li>
+        <li><b>Pillow:</b> HPND License</li>
+        </ul>
+        <p style="margin-top: 10px; font-size: 11px;">
+        <b>Source code: </b>
+        <a href="https://github.com/sitar-j/Cinematic_Slideshow">
+        https://github.com/sitar-j/Cinematic_Slideshow
+        </a><br>
+        <b>Full license :</b>
+        <a href="https://www.gnu.org/licenses/gpl-3.0.html">
+        https://www.gnu.org/licenses/gpl-3.0.html
+        </a>
+        </p>
+        """)
+
+        footer = QtWidgets.QLabel()
+        footer.setAlignment(QtCore.Qt.AlignCenter)
+        footer.setWordWrap(True)
+        footer.setStyleSheet("""
+            color: #95a5a6;
+            font-size: 13px;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 5px;
+            margin-top: 3px;
+            line-height: 1.4;
+        """)
+
+        footer_text = tr("msg_about_footer").replace("\n", "<br>")
+
+        footer.setText(f"""
+        <p><b>{tr("label_developer")}</b> sitarj</p>
+
+        <p style="color:#28a745;font-weight:bold;">
+        🆓 {tr("label_open_source")}
+        </p>
+
+        <p style="font-size:12px;">
+        {footer_text}
+        </p>
+        """)
+
+        disclaimer = QtWidgets.QLabel()
+        disclaimer.setWordWrap(True)
+        disclaimer.setStyleSheet("""
+            font-size: 11px;
+            color: #7f8c8d;
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 5px 0;
+            line-height: 1.0;
+        """)
+
+        disclaimer_text = tr("msg_disclaimer").split("\n")
+
+        if len(disclaimer_text) >= 5:
+            disclaimer.setText(f"""
+            <p><b>{disclaimer_text[0]}</b></p>
+
+            <ul style="margin: 6px 0 0 18px; padding: 0;">
+            <li>{disclaimer_text[1]}</li>
+            <li>{disclaimer_text[2]}</li>
+            <li>{disclaimer_text[3]}</li>
+            </ul>
+
+            <p style="margin-top:8px; font-weight:bold;">
+            {disclaimer_text[4]}
+            </p>
+            """)
+        else:
+            disclaimer.setText(tr("msg_disclaimer"))
+
+        info_tab_layout.addLayout(header_layout)
+        info_tab_layout.addWidget(license_info)
+        info_tab_layout.addWidget(footer)
+        info_tab_layout.addWidget(disclaimer)
+        info_tab_layout.addStretch(1)
+
+        tabs.addTab(general_tab, tr("tab_general"))
+        tabs.addTab(display_tab, tr("tab_display"))
+        tabs.addTab(effect_tab, tr("tab_effect"))
+        tabs.addTab(info_tab, tr("tab_info"))
+
+        main_v = QtWidgets.QVBoxLayout(self)
+        main_v.addWidget(tabs)
+        main_v.addWidget(self.button_box)
 
         self .profile_combo .currentIndexChanged .connect (self ._on_profile_changed )
         self .btn_profile_add .clicked .connect (self .on_add_profile )
@@ -2714,11 +3010,11 @@ class MainWindow (QtWidgets .QWidget ):
         self .btn_profile_save .setToolTip (tr("tooltip_profile_save"))
         self .btn_profile_rename .setToolTip (tr("tooltip_profile_rename"))
         self .btn_profile_duplicate .setToolTip (tr("tooltip_profile_duplicate"))
-        self.btn_profile_remove.setToolTip(tr("tooltip_profile_remove"))
-        self.btn_create_shortcut.setToolTip(tr("tooltip_create_shortcut"))
-        self.btn_backup.setToolTip(tr("tooltip_backup"))
-        self.btn_restore.setToolTip(tr("tooltip_restore"))
-        self.folder_list.setToolTip(tr("tooltip_folder_list"))
+        self .btn_profile_remove.setToolTip(tr("tooltip_profile_remove"))
+        self .btn_create_shortcut.setToolTip(tr("tooltip_create_shortcut"))
+        self .btn_backup.setToolTip(tr("tooltip_backup"))
+        self .btn_restore.setToolTip(tr("tooltip_restore"))
+        self .folder_list.setToolTip(tr("tooltip_folder_list"))
         self .btn_folder_add .setToolTip (tr("tooltip_folder_add"))
         self .btn_folder_remove .setToolTip (tr("tooltip_folder_remove"))
         self .chk_recursive .setToolTip (tr("tooltip_recursive"))
@@ -2745,8 +3041,8 @@ class MainWindow (QtWidgets .QWidget ):
         self .combo_v_pos .setToolTip (tr("tooltip_v_pos"))
         self .combo_h_pos .setToolTip (tr("tooltip_h_pos"))
         self .font_button .setToolTip (tr("tooltip_font_select"))
-        self.filename_v_offset_spin.setToolTip(tr("tooltip_filename_v_offset"))
-        self.filename_h_offset_spin.setToolTip(tr("tooltip_filename_h_offset"))
+        self .filename_v_offset_spin.setToolTip(tr("tooltip_filename_v_offset"))
+        self .filename_h_offset_spin.setToolTip(tr("tooltip_filename_h_offset"))
 
         self .chk_crossfade .setToolTip (tr("tooltip_crossfade"))
         self .chk_slide .setToolTip (tr("tooltip_slide"))
@@ -2759,10 +3055,10 @@ class MainWindow (QtWidgets .QWidget ):
 
         self .fade_spin .setToolTip (tr("tooltip_fade_duration"))
 
-        self.chk_ken.setToolTip(tr("tooltip_ken_burns"))
-        self.ken_intensity_slider.setToolTip(tr("tooltip_ken_intensity"))
+        self .chk_ken.setToolTip(tr("tooltip_ken_burns"))
+        self .ken_intensity_slider.setToolTip(tr("tooltip_ken_intensity"))
 
-        self .btn_about .setToolTip (tr("tooltip_about_button"))
+        # self .btn_about .setToolTip (tr("tooltip_about_button"))
 
     def _set_application_icon (self ):
         icon_set =False 
@@ -3107,6 +3403,15 @@ class MainWindow (QtWidgets .QWidget ):
         self .fade_spin .setValue (fade_ms /1000.0 )
 
         self .chk_ken .setChecked (config .get ("ken_burns",True ))
+        self .chk_ken_linear.setChecked(config.get("ken_burns_patterns", {}).get("linear", True))
+        self .chk_ken_arc.setChecked(config.get("ken_burns_patterns", {}).get("arc", True))
+        self .chk_ken_wave.setChecked(config.get("ken_burns_patterns", {}).get("wave", True))
+        self .chk_ken_spiral.setChecked(config.get("ken_burns_patterns", {}).get("spiral_in", True))
+        self .chk_ken_zigzag.setChecked(config.get("ken_burns_patterns", {}).get("zigzag", True))
+        self .chk_ken_edge_scan.setChecked(config.get("ken_burns_patterns", {}).get("edge_scan", False))
+        ken_order = config.get("ken_burns_order","random")
+        self .radio_ken_order.setChecked(ken_order == "sequential")
+        self .radio_ken_random.setChecked(ken_order == "random")
 
         ken_intensity =config .get ("ken_intensity",5 )
         self .ken_intensity_slider .setValue (ken_intensity )
@@ -3170,10 +3475,18 @@ class MainWindow (QtWidgets .QWidget ):
             config ["fade_duration_ms"]=int (self .fade_spin .value ()*1000 )
             config ["random_order"]=self .radio_order_random .isChecked ()
             config ["ken_burns"]=self .chk_ken .isChecked ()
+            config ["ken_burns_patterns"]={
+            "linear":self .chk_ken_linear .isChecked (),
+            "arc":self .chk_ken_arc .isChecked (),
+            "wave":self .chk_ken_wave .isChecked (),
+            "spiral_in":self .chk_ken_spiral .isChecked (),
+            "zigzag":self .chk_ken_zigzag .isChecked (),
+            "edge_scan":self .chk_ken_edge_scan .isChecked (),
+            }
+            config ["ken_burns_order"]="sequential" if self .radio_ken_order .isChecked () else "random"
             config ["ken_intensity"]=self .ken_intensity_slider .value ()
             config ["fit_mode"]="cover"if self .radio_fit_cover .isChecked ()else "contain"
             config ["stay_on_top"]=self .radio_front .isChecked ()
-
             config ["show_filename"]=self .chk_show_filename .isChecked ()
 
             v_text =self .combo_v_pos .currentText ()
@@ -3263,8 +3576,16 @@ class MainWindow (QtWidgets .QWidget ):
         "fade_duration_ms":int (self .fade_spin .value ()*1000 ),
         "random_order":self .radio_order_random .isChecked (),
         "ken_burns":self .chk_ken .isChecked (),
+        "ken_burns_patterns": {
+        "linear": self .chk_ken_linear .isChecked (),
+        "arc": self .chk_ken_arc .isChecked (),
+        "wave": self .chk_ken_wave .isChecked (),
+        "spiral_in": self .chk_ken_spiral .isChecked (),
+        "zigzag": self .chk_ken_zigzag .isChecked (),
+        "edge_scan": self .chk_ken_edge_scan .isChecked ()},"ken_burns_order":"sequential"
+        if self .radio_ken_order .isChecked () else "random",
         "ken_intensity":self .ken_intensity_slider .value (),
-        "fit_mode":"cover"if self .radio_fit_cover .isChecked ()else "contain",
+        "fit_mode":"cover"if self .radio_fit_cover .isChecked () else "contain",
         "stay_on_top":self .radio_front .isChecked (),
         "show_filename":self .chk_show_filename .isChecked (),
         "filename_v_pos":v_pos ,
@@ -3813,6 +4134,16 @@ class MainWindow (QtWidgets .QWidget ):
             interval_sec =config .get ("interval_sec",5 ),
             ken_burns =config .get ("ken_burns",True ),
             ken_intensity =config .get ("ken_intensity",5 ),
+            ken_burns_patterns =config .get ("ken_burns_patterns",
+            {
+            "linear":True ,
+            "arc":True ,
+            "wave":True ,
+            "spiral_in":True ,
+            "zigzag":True ,
+            "edge_scan":False ,
+            }),
+            ken_burns_order =config .get ("ken_burns_order","random"),
             random_order =config .get ("random_order",True ),
             fit_mode =config .get ("fit_mode","cover"),
             fade_duration_ms =config .get ("fade_duration_ms",1000 ),
@@ -4028,33 +4359,46 @@ def start_slideshow_direct (profile_name :str ,profile_data :Dict [str ,Any ]):
     window_width =profile_data .get ("window_width",1280 )
     window_height =profile_data .get ("window_height",768 )
     window_resizable =profile_data .get ("window_resizable",True )
+    ken_burns_patterns =profile_data .get ("ken_burns_patterns",
+    {
+    "linear":True ,
+    "arc":True ,
+    "wave":True ,
+    "spiral_in":True ,
+    "zigzag":True ,
+    "edge_scan":False ,
+    }
+    )
+    ken_burns_order =profile_data .get ("ken_burns_order","random")
 
     try :
         slideshow_win =SlideShowWindow (
-        image_files =all_images ,
-        current_profile_name =profile_name ,
-        monitor_index =monitor_index ,
-        stay_on_top =stay_on_top ,
-        interval_sec =interval_sec ,
-        ken_burns =ken_burns ,
-        ken_intensity =ken_intensity ,
-        random_order =random_order ,
-        fit_mode =fit_mode ,
-        fade_duration_ms =fade_duration_ms ,
-        show_filename =show_filename ,
-        filename_v_pos =filename_v_pos ,
-        filename_h_pos =filename_h_pos ,
-        font_family =font_family ,
-        font_size =font_size ,
-        filename_v_offset =filename_v_offset ,
-        filename_h_offset =filename_h_offset ,
-        effects =effects ,
-        effect_order =effect_order ,
-        window_mode =window_mode ,
-        window_width =window_width ,
-        window_height =window_height ,
-        window_resizable =window_resizable ,
-        main_window =main_window 
+        image_files = all_images,
+        current_profile_name = profile_name,
+        monitor_index = monitor_index,
+        stay_on_top = stay_on_top,
+        interval_sec = interval_sec,
+        ken_burns = ken_burns,
+        ken_intensity = ken_intensity,
+        ken_burns_patterns = ken_burns_patterns,
+        ken_burns_order = ken_burns_order,
+        random_order = random_order,
+        fit_mode =fit_mode,
+        fade_duration_ms = fade_duration_ms,
+        show_filename = show_filename,
+        filename_v_pos = filename_v_pos,
+        filename_h_pos = filename_h_pos,
+        font_family = font_family,
+        font_size = font_size,
+        filename_v_offset = filename_v_offset,
+        filename_h_offset = filename_h_offset,
+        effects = effects,
+        effect_order = effect_order,
+        window_mode = window_mode,
+        window_width = window_width,
+        window_height = window_height,
+        window_resizable = window_resizable,
+        main_window = main_window 
         )
 
         main_window .slideshow_window =slideshow_win 
