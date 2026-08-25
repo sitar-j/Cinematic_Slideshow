@@ -43,10 +43,12 @@
 #### Extended support (requires pillow-avif-plugin)（拡張対応（pillow-avif-plugin必要））
 -  AVIF, HEIC, HEIF, JPEG2000
 
+### Tips（ヒント）
+- If proper scaling is not achieved in a multi-monitor environment with different scaling settings, try setting "System (Enhanced)" under "Override high DPI scaling behavior" in the application's compatibility settings.（スケーリングの異なるマルチモニター環境で適切なスケーリングが得られない場合は、アプリケーションの互換性設定にある「高いDPI設定の上書き」で「システム（拡張）」をお試しください。）
+
 ### Known Issues（既知の問題）
 - Black bars may temporarily appear when using the Ken Burns effect.（Ken Burns効果中に一時的に黒帯が表示される場合があります）
 - It works reliably even with large numbers of images, but the initial load may take a long time.（大量の画像でも安定動作しますが、初回読み込み時に時間がかかる場合があります）
-- In multi-monitor environments with different scaling settings, proper scaling may not be achieved.（スケーリングの異なるマルチモニター環境で、適切なスケーリングが得られない場合があります）
 
 ### License（ライセンス）
 - GPL v3 License - See the LICENSE file for details.（詳細はLICENSEファイルを参照）
