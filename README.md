@@ -44,7 +44,7 @@
 -  AVIF, HEIC, HEIF, JPEG2000
 
 ### Tips（ヒント）
-- If proper scaling is not achieved in a multi-monitor environment with different scaling settings, try setting "System (Enhanced)" under "Override high DPI scaling behavior" in the application's compatibility settings.（スケーリングの異なるマルチモニター環境で適切なスケーリングが得られない場合は、アプリケーションの互換性設定にある「高いDPI設定の上書き」で「システム（拡張）」をお試しください。）
+- If proper scaling is not achieved in a multi-monitor environment with different scaling settings, try setting "System (Enhanced)" under "Override high DPI scaling behavior" in the application's compatibility settings.（スケーリングの異なるマルチモニター環境で適切なスケーリングが得られない場合は、アプリケーションの互換性設定にある「高いDPI設定の上書き」で「システム（拡張）」をお試しください）
 
 ### Known Issues（既知の問題）
 - Black bars may temporarily appear when using the Ken Burns effect.（Ken Burns効果中に一時的に黒帯が表示される場合があります）
