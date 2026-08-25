@@ -2974,7 +2974,7 @@ class MainWindow (QtWidgets .QWidget ):
 
         version_info = QtWidgets.QLabel("""
         <p style='margin: 5px 0; color: #7f8c8d; font-size: 12px;'>
-        <b>Version :</b> 2.2<br>
+        <b>Version :</b> 2.3<br>
         <b>Release :</b> June, 2026<br>
         <b>Build :</b> Python + PyQt5
         </p>
@@ -3122,11 +3122,6 @@ class MainWindow (QtWidgets .QWidget ):
             return
 
         current_lang = lang
-        self.profiles.setdefault(
-            "global_settings",
-            {}
-        )
-        self.profiles["global_settings"]["language"] = lang
         self._save_profiles()
         QtWidgets.QMessageBox.information(
             self,
@@ -3373,6 +3368,7 @@ class MainWindow (QtWidgets .QWidget ):
     def _load_profiles (self ):
         data =load_profiles ()
         self .profiles =data .get ("profiles",{})
+        self.profiles.pop("global_settings", None)
 
         if not self .profiles or "Default"not in self .profiles :
             self .profiles ["Default"]=self ._create_default_config ()
