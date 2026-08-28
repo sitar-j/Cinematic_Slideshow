@@ -2568,7 +2568,7 @@ class MainWindow (QtWidgets .QWidget ):
         self .window_height_spin .setRange (240 ,4320 )
         self .window_height_spin .setValue (768 )
         self .window_height_spin .setSuffix (" px")
-
+        self .btn_apply_current_size = QtWidgets.QPushButton(tr("btn_apply_current_size"))
         self .chk_window_resizable =QtWidgets .QCheckBox (tr("chk_window_resizable"))
         self .chk_window_resizable .setChecked (True )
 
@@ -2774,6 +2774,7 @@ class MainWindow (QtWidgets .QWidget ):
         window_size_h .addWidget (self .window_width_spin )
         window_size_h.addWidget(QtWidgets.QLabel(tr("label_height")))
         window_size_h .addWidget (self .window_height_spin )
+        window_size_h.addWidget(self.btn_apply_current_size)
         window_size_h .addStretch ()
         display_layout .addWidget (window_size_widget ,1 ,1 ,1 ,2 )
 
@@ -2974,7 +2975,7 @@ class MainWindow (QtWidgets .QWidget ):
 
         version_info = QtWidgets.QLabel("""
         <p style='margin: 5px 0; color: #7f8c8d; font-size: 12px;'>
-        <b>Version :</b> 2.3<br>
+        <b>Version :</b> 2.4<br>
         <b>Release :</b> June, 2026<br>
         <b>Build :</b> Python + PyQt5
         </p>
@@ -3107,6 +3108,8 @@ class MainWindow (QtWidgets .QWidget ):
         self .chk_recursive .stateChanged .connect (self ._on_recursive_changed )
 
         self .font_button .clicked .connect (self ._on_select_font )
+        
+        self.btn_apply_current_size.clicked.connect(self._on_apply_current_size)
 
         self .button_box .accepted .connect (self ._on_ok_clicked )
         self .button_box .rejected .connect (self ._on_cancel_clicked )
@@ -3299,6 +3302,12 @@ class MainWindow (QtWidgets .QWidget ):
         self .window_height_spin .setEnabled (is_window_mode )
         self .chk_window_resizable .setEnabled (is_window_mode )
         self .monitor_combo .setEnabled (not is_window_mode )
+        self.btn_apply_current_size.setEnabled(is_window_mode)
+    
+    def _on_apply_current_size(self):
+        if self.radio_mode_window.isChecked() and self.slideshow_window:
+            self.window_width_spin.setValue(self.slideshow_window.width())
+            self.window_height_spin.setValue(self.slideshow_window.height())
 
     def _restart_slideshow (self ):
 
@@ -3431,10 +3440,20 @@ class MainWindow (QtWidgets .QWidget ):
 
         config =self .profiles [self .current_profile ]
 
-        is_valid ,error_msg =self ._validate_config (config )
-        if not is_valid :
-            QtWidgets .QMessageBox .warning (self ,tr("error_settings_validation"),error_msg )
-            config .update (self ._create_default_config ())
+        is_valid ,error_msg = self ._validate_config (config )
+        if not is_valid:
+            monitor_count = len(QtWidgets.QApplication.screens())
+            monitor_index = config.get("monitor_index", 0)
+
+            if monitor_index >= monitor_count:
+                config["monitor_index"] = 0
+            else:
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    tr("error_settings_validation"),
+                    error_msg
+                )
+                config.update(self._create_default_config())
 
         self ._loaded_config ={
         "folders":config .get ("folders",[]),

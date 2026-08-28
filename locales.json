@@ -166,6 +166,10 @@
     "ja": "ウィンドウ",
     "en": "Window"
   },
+  "btn_apply_current_size": {
+    "ja": "現在サイズを適用",
+    "en": "Apply Current Size"
+  },
   "chk_window_resizable": {
     "ja": "ウィンドウサイズの変更を許可",
     "en": "Allow window resizing"
