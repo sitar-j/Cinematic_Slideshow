@@ -37,11 +37,7 @@
 - Right-click（右クリック）: Display context menu（コンテキストメニュー表示）
 
 ### Supported Formats（対応フォーマット）
-#### Native Support（ネイティブ対応）
-- JPEG, PNG, BMP, GIF, WebP, TIFF, ICO, SVG, AVIF
-
-#### Extended support（拡張対応）
--  HEIC, HEIF, JPEG2000
+- JPEG, PNG, BMP, GIF, WebP, TIFF, ICO, SVG, AVIF, JPEG2000
 
 ### Tips（ヒント）
 - If proper scaling is not achieved in a multi-monitor environment with different scaling settings, try setting "System (Enhanced)" under "Override high DPI scaling behavior" in the application's compatibility settings.（スケーリングの異なるマルチモニター環境で適切なスケーリングが得られない場合は、アプリケーションの互換性設定にある「高DPI設定の変更」で「システム（拡張）」をお試しください）
