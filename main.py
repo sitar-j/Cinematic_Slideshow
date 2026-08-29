@@ -68,21 +68,20 @@ def tr(key):
 
 try :
     import win32com .client 
-    PYWIN32_AVAILABLE =True 
+    PYWIN32_AVAILABLE = True 
 except ImportError :
-    PYWIN32_AVAILABLE =False 
+    PYWIN32_AVAILABLE = False 
     print ("Warning: pywin32 not installed. Windows shortcut creation disabled.")
 
 try :
     from PIL import Image 
-    import pillow_avif 
-    PILLOW_AVAILABLE =True 
+    PILLOW_AVAILABLE = True 
 except ImportError :
-    PILLOW_AVAILABLE =False 
+    PILLOW_AVAILABLE = False 
     print ("Warning: pillow-avif-plugin not installed. AVIF support disabled.")
 
 PROFILES_FILE ="profiles.json"
-ANIM_FPS =24 
+ANIM_FPS = 24 
 
 NATIVE_IMAGE_FORMATS =(
 ".jpg",".jpeg",".png",".bmp",".gif",
