@@ -1,5 +1,6 @@
 # Cinematic_Slideshow
 - A slideshow application with cinematic effects
+<img width="640" height="360" alt="sample_clip_hd" src="https://github.com/user-attachments/assets/d4946ae4-3a2d-45f9-890b-26d04e48a5e6" />
 
 ### Installation
 - It operates as a standalone application（スタンドアローンで動作します）
